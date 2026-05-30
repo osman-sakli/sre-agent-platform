@@ -1,0 +1,17 @@
+name: incident_5xx
+steps:
+  - check_honeycomb_error_rate
+  - check_top_endpoints
+  - check_recent_deploy
+  - check_kubernetes_pods
+  - check_dependency_spans
+  - summarize_impact
+allowed_actions:
+  - read_honeycomb
+  - read_kubernetes
+  - read_cloudwatch
+  - read_deployments
+blocked_actions:
+  - restart_pod
+  - rollback_deploy
+  - delete_resource

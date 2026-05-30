@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sre-agent-platform
+  namespace: sre-tools
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sre-agent-platform
+  template:
+    metadata:
+      labels:
+        app: sre-agent-platform
+    spec:
+      containers:
+        - name: sre-agent-platform
+          image: ghcr.io/osmsakli/sre-agent-platform:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: sre-agent-platform-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sre-agent-platform
+  namespace: sre-tools
+spec:
+  selector:
+    app: sre-agent-platform
+  ports:
+    - port: 80
+      targetPort: 8080
